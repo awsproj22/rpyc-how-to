@@ -1,0 +1,77 @@
+
+https://pybuild.sourceforge.net/pyinvoke.html
+
+  https://pybuild.sourceforge.net/pyinvoke.tgz
+
+
+# PyInvoke
+
+## Title
+
+PyInvoke is a transparent-rpc meant to ease control of remote machines, 
+with easy processing of their output, and with maximal transparency.
+
+## Competition
+
+PyInvoke inspired a competitor. This competitor took the idea even further 
+and created a possibly better implementation:
+
+    [RPyC](http://rpyc.wikispaces.com/): A reimplementation of PyInvoke, 
+    but also implements symmetric requests and other goodies. 
+
+## Is PyInvoke for you?
+
+Not necessarily. If you run over a slow or unreliable network, then PyInvoke 
+will not work well. PyInvoke assumes a fast reliable network. Fortunatly 
+this is the case in many local LANs of many potential users. PyInvoke is 
+also NOT optimized for minimal network use and will typically not work as well 
+as a specifically-created protocol for a specific purpose. If you currently 
+control multiple machines with automated SSH/telnet scripts, or implementing 
+specific network protocols or using any existing semi-transparent RPC-library, 
+then it is very likely that PyInvoke can ease your job.
+
+## What can PyInvoke do? What can't it do?
+
+PyInvoke can transparently import modules on remote machines, creating 
+local proxy objects for them, allowing transparent access to the remote module 
+objects. Those modules can then be used "natively", with the resulting objects 
+also being remote, but transparently proxied into "feeling" local. A local 
+proxy is said to be a "network reference" to an object on the server-side. 
+PyInvoke does not allow "network references" from the server to the client. 
+Thus, all objects the client gives the server functions as arguments 
+are copied. This means, for example, that you cannot hand a Window object 
+to the server and let it draw on the window. It will simply try to draw on 
+a copy of the Window instance. It works just fine the other way around though: 
+You can get a Window object as a return value of a function on the server, 
+and invoke its methods remotely.
+
+## Why yet another transparent RPC?
+
+Because no existing transparent RPC can be used with the minimal fuss 
+that PyInvoke can. Because with PyInvoke, the server is a small component 
+that needs not be touched. This allows all modifications to occur 
+only in the client side, which is especially useful when running servers 
+on multiple machines of multiple platforms. Because PyInvoke takes 
+transparency to a new level, abstracting even more the presense 
+of the network.
+
+## Download
+
+PyInvoke can be [downloaded](https://pybuild.sourceforge.net/pyinvoke.tgz) 
+here.
+
+____
+Eyal Lotem [peaker@users.sourceforge.net]
+Last modified: Sat Aug 19 16:11:59 IDT 2006 
+
+
+list files: 
+
+ls -l 
+
+-rw-rw-r-- 1     18647 Apr  8  2005 pyinvoke.tgz
+-rw-rw-r-- 1        79 Mar 26 17:32 pyinvoke-tgz-sha256-sum
+-rw-rw-r-- 1      2742 Mar 26 17:32 readme-link
+
+
+
