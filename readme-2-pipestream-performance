@@ -1,0 +1,82 @@
+
+search "PipeStream" in issues on github tomerfiliba-org/rpyc
+issue #457 SSL and PipeStream on Windows
+
+  code to create windows named pipes for communication: 
+
+    [...]
+    clientSide, serverSide = PipeStream.create_pair()
+    server = rpyc.connect_stream(sideServer, service=myService)
+    server.serve_all()
+    [...]
+
+  compression level can be set with rpyc.core.channel.Channel.COMPRESSION_LEVEL = 1 
+  for example RPYC client side. See more details #329 and for level compression 
+  https://docs.python.org/3/library/zlib.html.
+
+
+
+#329 performance: 
+
+modify to improve performance
+
+Modified server.py to increase MAX_IO_CHUNK during import
+
+import rpyc
+rpyc.core.channel.Channel.COMPRESSION_LEVEL = 0
+rpyc.core.stream.SocketStream.MAX_IO_CHUNK = 65355*10
+
+Increased timeout for client.py.
+
+import  rpyc
+c = rpyc.connect("localhost", 12345, config={"sync_request_timeout": 180})
+
+Max possible throughput for socket library
+
+#!/usr/bin/env python
+import sys
+import socket
+
+PORT = 8621
+HOST = "127.0.0.1"
+BUFFSZ = 1024
+COUNT = 1000000
+SENDBUFF = bytes('x' * (BUFFSZ - 1) + '\n', 'utf-8')
+
+def main():
+    if sys.argv[1] == '-s':
+        server()
+    elif sys.argv[1] == '-c':
+        client()
+    else:
+        sys.exist(1)
+
+def server():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('', PORT))
+    s.listen(1)
+    print('Server started.')
+    while 1:
+        conn, (host, remoteport) = s.accept()
+        while 1:
+            data = conn.recv(BUFFSZ)
+            if not data:
+                break
+            del data
+        conn.send(bytes('OK\n', 'utf-8'))
+        conn.close()
+        print('Done with', host, 'port', remoteport)
+
+def client():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    for i in range(COUNT):
+        s.send(SENDBUFF)
+    s.shutdown(1)
+    s.recv(BUFFSZ)
+
+if __name__ == "__main__":
+    main()
+
+
+
