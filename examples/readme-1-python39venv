@@ -1,0 +1,28 @@
+
+
+$ python --version
+Python 3.9.5
+
+
+$ pip list
+Package    Version
+---------- -------
+pip        21.1.1
+setuptools 56.0.0
+
+
+~\plumbum$ pip install .
+Using legacy 'setup.py install' for plumbum, since package 'wheel' is not installed.
+Installing collected packages: plumbum
+    Running setup.py install for plumbum ... done
+Successfully installed plumbum-1.6.9
+
+
+~\rpyc$ pip install -e .
+Obtaining file:///C:/rpyc
+Requirement already satisfied: plumbum in c:\python-venv39\lib\site-packages (from rpyc==4.1.5) (1.6.9)
+Installing collected packages: rpyc
+  Running setup.py develop for rpyc
+Successfully installed rpyc-4.1.5
+
+

@@ -5,4 +5,8 @@ install versions:
   plumbum 1.6.9
 
 
+windows pywin32: 
+
+  pywin32 306 -- refer to examples/example-2-
+
 
